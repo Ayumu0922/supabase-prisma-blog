@@ -15,7 +15,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-const formSchema = z.object({
+import { useRouter } from "next/navigation";
+import { postBBS } from "@/app/actions/postBBSAction";
+
+export const formSchema = z.object({
   username: z.string().min(2, { message: "ユーザ名は2文字以上" }),
   title: z.string().min(2, { message: "タイトルは2文字以上" }),
   content: z
@@ -25,6 +28,8 @@ const formSchema = z.object({
 });
 
 const CreateBBSPage = () => {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,11 +39,17 @@ const CreateBBSPage = () => {
     },
   });
 
-  async function onSubmit() {}
+  async function onSubmit(value: z.infer<typeof formSchema>) {
+    const { username, title, content } = value;
+    postBBS({ username, title, content });
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 w-1/2 p-4"
+      >
         <FormField
           control={form.control}
           name="username"
