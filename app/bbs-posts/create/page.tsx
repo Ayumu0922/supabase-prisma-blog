@@ -17,15 +17,7 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { postBBS } from "@/app/actions/postBBSAction";
-
-export const formSchema = z.object({
-  username: z.string().min(2, { message: "ユーザ名は2文字以上" }),
-  title: z.string().min(2, { message: "タイトルは2文字以上" }),
-  content: z
-    .string()
-    .min(2, { message: "内容は2文字以上" })
-    .max(140, { message: "140文字以内" }),
-});
+import { formSchema } from "@/src/schemas/postSchema";
 
 const CreateBBSPage = () => {
   const router = useRouter();
